@@ -7,5 +7,8 @@ export const users = pgTable("users", {
   password: varchar("password", { length: 255 }).notNull(),
   role: varchar("role", { length: 50 }).notNull(),
   created_at: timestamp().defaultNow().notNull(),
-  updated_at: timestamp().defaultNow().notNull(),
+  updated_at: timestamp()
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });
