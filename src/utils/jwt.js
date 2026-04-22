@@ -2,8 +2,10 @@ import jwt from "jsonwebtoken";
 
 import logger from "#config/logger.js";
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || "your-secret-key-please-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
 const JWT_EXPIRES_IN = "1d";
 
 export const jwtToken = {
@@ -11,8 +13,8 @@ export const jwtToken = {
     try {
       return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
     } catch (error) {
-      logger.error("Failed to authenticate token", error);
-      throw new Error("Failed to authenticate token");
+      logger.error("Failed to sign token", error);
+      throw new Error("Failed to sign token");
     }
   },
 
