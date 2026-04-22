@@ -16,14 +16,6 @@ export const hashPassword = async (password) => {
 
 export const createUser = async ({ name, email, password, role = "user" }) => {
   try {
-    const existingUser = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
-
-    if (existingUser.length > 0) throw new Error("User already exists");
-
     const password_hash = await hashPassword(password);
 
     const [newUser] = await db
@@ -37,9 +29,12 @@ export const createUser = async ({ name, email, password, role = "user" }) => {
         created_at: users.created_at,
       });
 
-    logger.info(`User ${newUser.email} created successfully`);
+    logger.info(`User ${newUser.id} created successfully`);
     return newUser;
   } catch (error) {
+    // Handle unique constraint violation (code depends on your DB driver)
+    if (error.code === "23505") throw new Error("Unable to create account");
+
     logger.error(`Error creating the user: ${error}`);
     throw error;
   }
