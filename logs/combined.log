@@ -39,3 +39,10 @@
 {"level":"error","message":"Error authenticating user: Error: Invalid password","service":"acquisitions-api","timestamp":"2026-04-23T09:33:38.015Z"}
 {"level":"error","message":"Sign in error:  Invalid password","service":"acquisitions-api","stack":"Error: Invalid password\n    at authenticateUser (file:///D:/projects/devOps/docker-course/acquisitions/src/services/auth.service.js:67:33)\n    at async signIn (file:///D:/projects/devOps/docker-course/acquisitions/src/controllers/auth.controller.js:65:18)","timestamp":"2026-04-23T09:33:38.016Z"}
 {"level":"info","message":"::1 - - [23/Apr/2026:09:33:38 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 500 408 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-23T09:33:38.017Z"}
+{"level":"info","message":"Hello from Acquisitions!","service":"acquisitions-api","timestamp":"2026-04-23T10:32:02.281Z"}
+{"level":"info","message":"::1 - - [23/Apr/2026:10:32:02 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36\"","service":"acquisitions-api","timestamp":"2026-04-23T10:32:02.296Z"}
+{"level":"info","message":"User signed out successfully","service":"acquisitions-api","timestamp":"2026-04-23T10:37:05.549Z"}
+{"level":"info","message":"::1 - - [23/Apr/2026:10:37:05 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 42 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-23T10:37:05.552Z"}
+{"level":"info","message":"::1 - - [23/Apr/2026:10:37:14 +0000] \"GET /api/auth/sign-out HTTP/1.1\" 404 27 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-23T10:37:14.274Z"}
+{"level":"info","message":"User signed out successfully","service":"acquisitions-api","timestamp":"2026-04-23T10:37:19.023Z"}
+{"level":"info","message":"::1 - - [23/Apr/2026:10:37:19 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 42 \"-\" \"HTTPie\"","service":"acquisitions-api","timestamp":"2026-04-23T10:37:19.025Z"}
