@@ -1,12 +1,14 @@
 import express from "express";
-import logger from "#config/logger.js";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import router from "#routes/auth.routes.js";
+
+import logger from "#config/logger.js";
+import authRoutes from "#routes/auth.routes.js";
 
 const app = express();
+
 app.use(helmet());
 app.use(cors());
 
@@ -42,6 +44,8 @@ app.get("/api", (req, res) =>
   }),
 );
 
-app.use("/api/auth", router);
+app.use("/api/auth", authRoutes);
+
+app.use((req, res) => res.status(404).json({ error: "Route not found" }));
 
 export default app;

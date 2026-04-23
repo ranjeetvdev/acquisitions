@@ -1,0 +1,2 @@
+{"level":"error","message":"Error authenticating user: Error: Invalid password","service":"acquisitions-api","timestamp":"2026-04-23T09:33:38.015Z"}
+{"level":"error","message":"Sign in error:  Invalid password","service":"acquisitions-api","stack":"Error: Invalid password\n    at authenticateUser (file:///D:/projects/devOps/docker-course/acquisitions/src/services/auth.service.js:67:33)\n    at async signIn (file:///D:/projects/devOps/docker-course/acquisitions/src/controllers/auth.controller.js:65:18)","timestamp":"2026-04-23T09:33:38.016Z"}

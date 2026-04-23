@@ -14,6 +14,15 @@ export const hashPassword = async (password) => {
   }
 };
 
+export const comparePassword = async (password, hashPassword) => {
+  try {
+    return await bcrypt.compare(password, hashPassword);
+  } catch (error) {
+    logger.error(`Error comparing password: ${error}`);
+    throw new Error("Error comparing password");
+  }
+};
+
 export const createUser = async ({ name, email, password, role = "user" }) => {
   try {
     const password_hash = await hashPassword(password);
@@ -36,6 +45,37 @@ export const createUser = async ({ name, email, password, role = "user" }) => {
     if (error.code === "23505") throw new Error("Unable to create account");
 
     logger.error(`Error creating the user: ${error}`);
+    throw error;
+  }
+};
+
+export const authenticateUser = async ({ email, password }) => {
+  try {
+    const [existingUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (!existingUser) throw new Error("User not found");
+
+    const isPasswordValid = await comparePassword(
+      password,
+      existingUser.password,
+    );
+
+    if (!isPasswordValid) throw new Error("Invalid password");
+
+    logger.info(`User ${existingUser.email} authenticated successfully`);
+    return {
+      id: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+      role: existingUser.role,
+      created_at: existingUser.created_at,
+    };
+  } catch (error) {
+    logger.error(`Error authenticating user: ${error}`);
     throw error;
   }
 };
