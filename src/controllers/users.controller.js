@@ -30,8 +30,6 @@ export const fetchAllUsers = async (req, res, next) => {
 
 export const fetchUserById = async (req, res, next) => {
   try {
-    logger.info(`Getting user by id: ${req.params.id}`);
-
     // Validate the user ID parameter
     const validationResult = userIdSchema.safeParse({ id: req.params.id });
 
@@ -42,6 +40,8 @@ export const fetchUserById = async (req, res, next) => {
       });
 
     const { id } = validationResult.data;
+    logger.info(`Getting user by id: ${id}`);
+
     const user = await getUserById(id);
 
     logger.info(`User ${user.email} retrieved successfully`);
@@ -60,8 +60,6 @@ export const fetchUserById = async (req, res, next) => {
 
 export const updateUserById = async (req, res, next) => {
   try {
-    logger.info(`Updating user: ${req.params.id}`);
-
     // Validate the user ID parameter
     const idValidationResult = userIdSchema.safeParse({ id: req.params.id });
 
@@ -81,6 +79,7 @@ export const updateUserById = async (req, res, next) => {
       });
 
     const { id } = idValidationResult.data;
+    logger.info(`Updating user: ${id}`);
     const updates = updateValidationResult.data;
 
     // Authorization checks
@@ -133,8 +132,6 @@ export const updateUserById = async (req, res, next) => {
 
 export const deleteUserById = async (req, res, next) => {
   try {
-    logger.info(`Deleting user: ${req.params.id}`);
-
     // Validate the user ID parameter
     const validationResult = userIdSchema.safeParse({ id: req.params.id });
 
@@ -145,11 +142,12 @@ export const deleteUserById = async (req, res, next) => {
       });
 
     const { id } = validationResult.data;
+    logger.info(`Deleting user: ${id}`);
 
     // Authorization checks
     if (!req.user)
       return res.status(401).json({
-        error: "Authorization required",
+        error: "Authentication required",
         message: "You must be logged in to delete users",
       });
 
@@ -175,7 +173,7 @@ export const deleteUserById = async (req, res, next) => {
       user: deletedUser,
     });
   } catch (error) {
-    logger.info(`Error deleting user: ${error.message}`);
+    logger.error(`Error deleting user: ${error.message}`);
 
     if (error.message === "User not found")
       return res.status(404).json({

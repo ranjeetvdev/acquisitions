@@ -12,7 +12,7 @@ export const updateUserSchema = z
   .object({
     name: z.string().min(2).max(255).trim().optional(),
     email: z.email().max(255).toLowerCase().trim().optional(),
-    role: z.enum(["User", "admin"]).optional(),
+    role: z.enum(["user", "admin"]).optional(),
   })
   .refine(
     (data) => {

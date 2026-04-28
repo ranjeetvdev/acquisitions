@@ -42,7 +42,7 @@ export const getUserById = async (id) => {
     }
     return user;
   } catch (error) {
-    logger.error("Error getting user by id ${id}: ", error);
+    logger.error(`Error getting user by id ${id}: ${error}`);
     throw error;
   }
 };
@@ -78,13 +78,13 @@ export const updateUser = async (id, updates) => {
       .returning({
         id: users.id,
         email: users.email,
+        name: users.name,
         role: users.role,
         created_at: users.created_at,
         updated_at: users.updated_at,
       });
-
-    logger.info(`User ${updatedUser.email} user ${id}: `, error);
-    return updateUser;
+    logger.info(`User ${updatedUser.email} updated successfully`);
+    return updatedUser;
   } catch (error) {
     logger.error(`Error updating user ${id}: `, error);
     throw error;
@@ -107,7 +107,7 @@ export const deleteUser = async (id) => {
       });
 
     logger.info(`User ${deletedUser.email} deleted successfully`);
-    return deleteUser;
+    return deletedUser;
   } catch (error) {
     logger.error(`Error deleting user ${id}: ${error}`);
     throw error;

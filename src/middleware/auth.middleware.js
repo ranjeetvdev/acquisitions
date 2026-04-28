@@ -14,15 +14,28 @@ export const authenticateToken = (req, res, next) => {
     const decoded = jwtToken.verify(token);
     req.user = decoded;
 
-    logger.info(`User authenticated: ${decoded.email} (${decoded.role})`);
+    logger.info(`User authenticated: ${decoded.id} (${decoded.role})`);
     next();
   } catch (error) {
     logger.error(`Authentication error: ${error}`);
 
-    if (error.message === "Failed to authenticate token")
+    // Handle JWT-specific errors safely
+    if (error.name === "TokenExpiredError")
       return res.status(401).json({
         error: "Authentication failed",
-        message: "Invalid or expired token",
+        message: "Token expired",
+      });
+
+    if (error.name === "JsonWebTokenError")
+      return res.status(401).json({
+        error: "Authentication failed",
+        message: "Invalid token",
+      });
+
+    if (error.name === "NotBeforeError")
+      return res.status(401).json({
+        error: "Authentication failed",
+        message: "Token not active",
       });
 
     return res.status(500).json({
@@ -42,7 +55,7 @@ export const requireRole = (allowedRoles) => (req, res, next) => {
 
     if (!allowedRoles.includes(req.user.role)) {
       logger.warn(
-        `Access denied for user ${req.user.email} with role ${req.user.role}. Required: ${allowedRoles.join(
+        `Access denied for user ${req.user.id} with role ${req.user.role}. Required: ${allowedRoles.join(
           ", ",
         )}`,
       );
