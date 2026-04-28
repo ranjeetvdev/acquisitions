@@ -40,6 +40,17 @@ export const fetchUserById = async (req, res, next) => {
       });
 
     const { id } = validationResult.data;
+     if (!req.user)
+    return res.status(401).json({
+      error: "Authentication required",
+        message: "You must be logged in to view user information",
+      });
+
+    if (req.user.role !== "admin" && req.user.id !== id)
+      return res.status(403).json({
+        error: "Access denied",
+        message: "You can only view your own information",
+      });
     logger.info(`Getting user by id: ${id}`);
 
     const user = await getUserById(id);

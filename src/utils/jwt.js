@@ -23,7 +23,7 @@ export const jwtToken = {
       return jwt.verify(token, JWT_SECRET);
     } catch (error) {
       logger.error("Failed to authenticate token", error);
-      throw new Error("Failed to authenticate token");
+      throw error;
     }
   },
 };

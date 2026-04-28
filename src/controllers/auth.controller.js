@@ -27,7 +27,7 @@ export const signup = async (req, res, next) => {
 
     cookies.set(res, "token", token);
 
-    logger.info(`User registered successfully: ${email}`);
+    logger.info(`User signed in successfully: ${user.id}`);
     res.status(201).json({
       message: "User Created",
       user: {
@@ -40,7 +40,7 @@ export const signup = async (req, res, next) => {
   } catch (error) {
     logger.error("Signup error", error);
 
-    if (error.message === "User with this email already exists") {
+    if (error.message === "Unable to create account") {
       return res.status(409).json({
         error: "Email already exists",
       });
@@ -72,7 +72,7 @@ export const signIn = async (req, res, next) => {
 
     cookies.set(res, "token", token);
 
-    logger.info(`User signed in successfully: ${email}`);
+    logger.info(`User signed in successfully: ${user.id}`);
     res.status(200).json({
       message: "User signed in successfully",
       user: {
@@ -87,7 +87,7 @@ export const signIn = async (req, res, next) => {
 
     if (
       error.message === "User not found" ||
-      error.message === "Invalid Password"
+      error.message === "Invalid password"
     )
       return res.status(401).json({ error: "Invalid credentials" });
     next(error);

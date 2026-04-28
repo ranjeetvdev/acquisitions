@@ -83,9 +83,14 @@ export const updateUser = async (id, updates) => {
         created_at: users.created_at,
         updated_at: users.updated_at,
       });
+
+    if (!updatedUser) throw new Error("User not found");
+
     logger.info(`User ${updatedUser.email} updated successfully`);
     return updatedUser;
   } catch (error) {
+    if (error.code === "23505") throw new Error("Email already exists");
+
     logger.error(`Error updating user ${id}: `, error);
     throw error;
   }
@@ -105,6 +110,8 @@ export const deleteUser = async (id) => {
         name: users.name,
         role: users.role,
       });
+
+    if (!deletedUser) throw new Error("User not found");
 
     logger.info(`User ${deletedUser.email} deleted successfully`);
     return deletedUser;
