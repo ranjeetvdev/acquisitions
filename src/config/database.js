@@ -6,11 +6,11 @@ if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL environment variable is required");
 }
 
-if (process.env.NODE_ENV === "development") {
-  neonConfig.fetchEndpoint = "http://neon-local:5432/sql";
-  neonConfig.useSecureWebSocket = false;
-  neonConfig.poolQueryViaFetch = true;
-}
+// if (process.env.NODE_ENV === "development") {
+//   neonConfig.fetchEndpoint = "http://neon-local:5432/sql";
+//   neonConfig.useSecureWebSocket = false;
+//   neonConfig.poolQueryViaFetch = true;
+// }
 
 const sql = neon(process.env.DATABASE_URL);
 const db = drizzle(sql);
