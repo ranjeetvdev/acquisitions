@@ -40,7 +40,7 @@ export const fetchUserById = async (req, res, next) => {
       });
 
     const { id } = validationResult.data;
-     if (!req.user)
+    if (!req.user)
     return res.status(401).json({
       error: "Authentication required",
         message: "You must be logged in to view user information",
