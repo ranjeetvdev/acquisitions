@@ -1,9 +1,14 @@
+const COOKIE_MAX_AGE = Number.isFinite(Number(process.env.COOKIE_MAX_AGE))
+  ? Number(process.env.COOKIE_MAX_AGE)
+  : 15 * 60 * 1000; // 15 minutes in milliseconds
+
 export const cookies = {
   getOptions: () => ({
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 24 * 60 * 60 * 1000, // hours * minute * second * millisecond( 1 day in milliseconds matches JWT_EXPIRES_IN)
+    sameSite: "lax",
+    path: "/",
+    maxAge: COOKIE_MAX_AGE,
   }),
 
   set: (res, name, value, options = {}) =>
@@ -12,5 +17,5 @@ export const cookies = {
   clear: (res, name, options = {}) =>
     res.clearCookie(name, { ...cookies.getOptions(), ...options }),
 
-  get: (req, name) => req.cookies[name],
+  get: (req, name) => req.cookies?.[name],
 };

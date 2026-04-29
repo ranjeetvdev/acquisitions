@@ -11,6 +11,7 @@ export const signup = async (req, res, next) => {
 
     if (!validationResult.success)
       return res.status(400).json({
+        success: false,
         error: "Validation failed",
         details: formatValidationError(validationResult.error),
       });
@@ -29,6 +30,7 @@ export const signup = async (req, res, next) => {
 
     logger.info(`User signed in successfully: ${user.id}`);
     res.status(201).json({
+      success: true,
       message: "User Created",
       user: {
         id: user.id,
@@ -42,6 +44,7 @@ export const signup = async (req, res, next) => {
 
     if (error.message === "Unable to create account") {
       return res.status(409).json({
+        success: false,
         error: "Email already exists",
       });
     }
