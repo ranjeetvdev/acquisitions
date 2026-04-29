@@ -37,7 +37,7 @@ export const jwtToken = {
         message: error.message,
       });
 
-      throw new Error("Invalid or expired token");
+      throw error;
     }
   },
 };

@@ -65,7 +65,7 @@ export const authenticateUser = async ({ email, password }) => {
       existingUser.password,
     );
 
-    if (!isPasswordValid) throw new Error("Invalid credentials");
+    if (!isPasswordValid) throw new Error("Invalid password");
 
     logger.info(`User ${existingUser.email} authenticated successfully`);
     return {
