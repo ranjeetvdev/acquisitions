@@ -23,6 +23,7 @@ export const signupSchema = z.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/,
       "Password must include uppercase, lowercase, number, and special character",
     ),
+  role: z.enum(["user", "admin"]).optional().default("user"),
 });
 
 export const signInSchema = z.object({
