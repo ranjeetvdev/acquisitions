@@ -89,7 +89,8 @@ export const updateUser = async (id, updates) => {
     logger.info(`User ${updatedUser.email} updated successfully`);
     return updatedUser;
   } catch (error) {
-    if (error.code === "23505") throw new Error("Email already exists");
+    if (error.cause?.code === "23505")
+      throw new Error("Unable to create account");
 
     logger.error(`Error updating user ${id}: `, error);
     throw error;

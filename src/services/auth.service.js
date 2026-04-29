@@ -42,7 +42,8 @@ export const createUser = async ({ name, email, password, role = "user" }) => {
     return newUser;
   } catch (error) {
     // Handle unique constraint violation (code depends on your DB driver)
-    if (error.code === "23505") throw new Error("Unable to create account");
+    if (error.cause?.code === "23505")
+      throw new Error("Unable to create account");
 
     logger.error(`Error creating the user: ${error}`);
     throw error;
@@ -64,7 +65,7 @@ export const authenticateUser = async ({ email, password }) => {
       existingUser.password,
     );
 
-    if (!isPasswordValid) throw new Error("Invalid password");
+    if (!isPasswordValid) throw new Error("Invalid credentials");
 
     logger.info(`User ${existingUser.email} authenticated successfully`);
     return {
