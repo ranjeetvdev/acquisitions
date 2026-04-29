@@ -1,0 +1,78 @@
+import logger from "#config/logger.js";
+import { jwtToken } from "#utils/jwt.js";
+
+export const authenticateToken = (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token)
+      return res.status(401).json({
+        error: "Authentication required",
+        message: "No access token provided",
+      });
+
+    const decoded = jwtToken.verify(token);
+    req.user = decoded;
+
+    logger.info(`User authenticated: ${decoded.id} (${decoded.role})`);
+    next();
+  } catch (error) {
+    logger.error(`Authentication error: ${error}`);
+
+    // Handle JWT-specific errors safely
+    if (error.name === "TokenExpiredError")
+      return res.status(401).json({
+        error: "Authentication failed",
+        message: "Token expired",
+      });
+
+    if (error.name === "JsonWebTokenError")
+      return res.status(401).json({
+        error: "Authentication failed",
+        message: "Invalid token",
+      });
+
+    if (error.name === "NotBeforeError")
+      return res.status(401).json({
+        error: "Authentication failed",
+        message: "Token not active",
+      });
+
+    return res.status(500).json({
+      error: "Internal server error",
+      message: "Error during authentication",
+    });
+  }
+};
+
+export const requireRole = (allowedRoles) => (req, res, next) => {
+  try {
+    if (!req.user)
+      return res.status(401).json({
+        error: "Authentication required",
+        message: "User not authenticated",
+      });
+
+    if (!allowedRoles.includes(req.user.role)) {
+      logger.warn(
+        `Access denied for user ${req.user.id} with role ${req.user.role}. Required: ${allowedRoles.join(
+          ", ",
+        )}`,
+      );
+
+      return res.status(403).json({
+        error: "Access denied",
+        message: "Insufficient permissions",
+      });
+    }
+
+    next();
+  } catch (error) {
+    logger.error(`Role verification error: ${error}`);
+
+    return res.status(500).json({
+      error: "Internal server error",
+      message: "Error during role verification",
+    });
+  }
+};
