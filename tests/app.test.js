@@ -3,7 +3,7 @@ import request from "supertest";
 import app from "#src/app.js";
 
 describe("API Endpoints", () => {
-  describe("Get /health", () => {
+  describe("GET /health", () => {
     it("should return health status", async () => {
       const response = await request(app).get("/health").expect(200);
 
