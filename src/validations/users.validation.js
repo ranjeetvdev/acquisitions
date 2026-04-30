@@ -43,6 +43,7 @@ export const updateUserSchema = z
       return Object.keys(data).length > 0;
     },
     {
-      message: "At least one field must be provided for update",
+      message:
+        "Request body must include at least one updatable field: name, email, password, or role",
     },
   );
