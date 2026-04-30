@@ -5,7 +5,7 @@ import { authenticateUser, createUser } from "#services/auth.service.js";
 import { formatValidationError } from "#utils/format.js";
 import { signInSchema, signupSchema } from "#validations/auth.validation.js";
 
-export const signup = async (req, res, next) => {
+export const signUp = async (req, res, next) => {
   try {
     const validationResult = signupSchema.safeParse(req.body);
 
