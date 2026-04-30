@@ -16,13 +16,14 @@ export const signupSchema = z.object({
 
   password: z
     .string()
-    .trim()
     .min(8, "Password must be at least 8 characters")
     .max(128, "Password cannot exceed 128 characters")
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/,
       "Password must include uppercase, lowercase, number, and special character",
     ),
+
+  role: z.enum(["user", "admin"]).optional().default("user"),
 });
 
 export const signInSchema = z.object({

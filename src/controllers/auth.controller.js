@@ -5,7 +5,7 @@ import { authenticateUser, createUser } from "#services/auth.service.js";
 import { formatValidationError } from "#utils/format.js";
 import { signInSchema, signupSchema } from "#validations/auth.validation.js";
 
-export const signup = async (req, res, next) => {
+export const signUp = async (req, res, next) => {
   try {
     const validationResult = signupSchema.safeParse(req.body);
 
@@ -28,7 +28,7 @@ export const signup = async (req, res, next) => {
 
     cookies.set(res, "token", token);
 
-    logger.info(`User signed in successfully: ${user.id}`);
+    logger.info(`User signed up successfully: ${user.id}`);
     res.status(201).json({
       success: true,
       message: "User Created",
@@ -59,6 +59,7 @@ export const signIn = async (req, res, next) => {
 
     if (!validationResult.success)
       return res.status(400).json({
+        success: false,
         error: "Validation failed",
         details: formatValidationError(validationResult.error),
       });
@@ -77,6 +78,7 @@ export const signIn = async (req, res, next) => {
 
     logger.info(`User signed in successfully: ${user.id}`);
     res.status(200).json({
+      success: true,
       message: "User signed in successfully",
       user: {
         id: user.id,
@@ -92,17 +94,21 @@ export const signIn = async (req, res, next) => {
       error.message === "User not found" ||
       error.message === "Invalid password"
     )
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({
+        success: false,
+        error: "Invalid credentials",
+      });
     next(error);
   }
 };
 
-export const signOut = async (req, res, next) => {
+export const signOut = (req, res, next) => {
   try {
     cookies.clear(res, "token");
 
     logger.info("User signed out successfully");
     res.status(200).json({
+      success: true,
       message: "User signed out successfully",
     });
   } catch (error) {
