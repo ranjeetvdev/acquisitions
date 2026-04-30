@@ -60,7 +60,7 @@ export const fetchUserById = async (req, res, next) => {
 
     const user = await getUserById(id);
 
-    logger.info(`User ${user.email} retrieved successfully`);
+    logger.info(`User ${id} retrieved successfully`);
     res.json({
       success: true,
       message: "User retrieved successfully",
@@ -134,7 +134,7 @@ export const updateUserById = async (req, res, next) => {
 
     const updatedUser = await updateUser(id, updates);
 
-    logger.info(`User ${updatedUser.email} updated successfully`);
+    logger.info(`User ${id} updated successfully`);
     res.json({
       success: true,
       message: "User updated successfully",
@@ -199,8 +199,8 @@ export const deleteUserById = async (req, res, next) => {
       });
 
     const deletedUser = await deleteUser(id);
+    logger.info(`User ${id} deleted successfully`);
 
-    logger.info(`User ${deletedUser.email} deleted successfully`);
     res.json({
       success: true,
       message: "User deleted successfully",

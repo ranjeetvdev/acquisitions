@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 
+import logger from "#config/logger.js";
+
 export const hashPassword = async (password) => {
   try {
     return await bcrypt.hash(password, 10);
@@ -9,9 +11,9 @@ export const hashPassword = async (password) => {
   }
 };
 
-export const comparePassword = async (password, hashPassword) => {
+export const comparePassword = async (password, hashedPassword) => {
   try {
-    return await bcrypt.compare(password, hashPassword);
+    return await bcrypt.compare(password, hashedPassword);
   } catch (error) {
     logger.error(`Error comparing password: ${error}`);
     throw new Error("Error comparing password");
