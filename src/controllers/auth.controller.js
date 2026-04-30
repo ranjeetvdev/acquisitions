@@ -28,7 +28,7 @@ export const signUp = async (req, res, next) => {
 
     cookies.set(res, "token", token);
 
-    logger.info(`User signed in successfully: ${user.id}`);
+    logger.info(`User signed up successfully: ${user.id}`);
     res.status(201).json({
       success: true,
       message: "User Created",
@@ -102,7 +102,7 @@ export const signIn = async (req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) => {
+export const signOut = (req, res, next) => {
   try {
     cookies.clear(res, "token");
 
