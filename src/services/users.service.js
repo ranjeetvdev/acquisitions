@@ -60,9 +60,7 @@ export const updateUser = async (id, updates) => {
         .where(eq(users.email, updates.email))
         .limit(1);
 
-      if (emailExists) {
-        throw new Error("Email already exists");
-      }
+      if (emailExists) throw new Error("Email already exists");
     }
 
     // Add updated_at timestamp

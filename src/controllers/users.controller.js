@@ -43,6 +43,7 @@ export const fetchUserById = async (req, res, next) => {
       });
 
     const { id } = validationResult.data;
+
     if (!req.user)
       return res.status(401).json({
         success: false,
@@ -56,6 +57,7 @@ export const fetchUserById = async (req, res, next) => {
         error: "Access denied",
         message: "You can only view your own information",
       });
+
     logger.info(`Getting user by id: ${id}`);
 
     const user = await getUserById(id);
