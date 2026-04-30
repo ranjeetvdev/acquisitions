@@ -59,6 +59,7 @@ export const signIn = async (req, res, next) => {
 
     if (!validationResult.success)
       return res.status(400).json({
+        success: false,
         error: "Validation failed",
         details: formatValidationError(validationResult.error),
       });
@@ -77,6 +78,7 @@ export const signIn = async (req, res, next) => {
 
     logger.info(`User signed in successfully: ${user.id}`);
     res.status(200).json({
+      success: true,
       message: "User signed in successfully",
       user: {
         id: user.id,
@@ -92,7 +94,10 @@ export const signIn = async (req, res, next) => {
       error.message === "User not found" ||
       error.message === "Invalid password"
     )
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({
+        success: false,
+        error: "Invalid credentials",
+      });
     next(error);
   }
 };
