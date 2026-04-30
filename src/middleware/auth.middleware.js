@@ -17,7 +17,9 @@ export const authenticateToken = (req, res, next) => {
     logger.info(`User authenticated: ${decoded.id} (${decoded.role})`);
     next();
   } catch (error) {
-    logger.error(`Authentication error: ${error}`);
+    logger.error("Authentication error: ", {
+      message: error.message,
+    });
 
     // Handle JWT-specific errors safely
     if (error.name === "TokenExpiredError")

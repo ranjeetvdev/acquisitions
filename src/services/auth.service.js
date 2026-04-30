@@ -1,27 +1,9 @@
-import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 
 import logger from "#config/logger.js";
 import { db } from "#config/database.js";
 import { users } from "#models/user.model.js";
-
-export const hashPassword = async (password) => {
-  try {
-    return await bcrypt.hash(password, 10);
-  } catch (error) {
-    logger.error(`Error hashing the password: ${error}`);
-    throw new Error("Error hashing");
-  }
-};
-
-export const comparePassword = async (password, hashPassword) => {
-  try {
-    return await bcrypt.compare(password, hashPassword);
-  } catch (error) {
-    logger.error(`Error comparing password: ${error}`);
-    throw new Error("Error comparing password");
-  }
-};
+import { comparePassword, hashPassword } from "#src/utils/bcrypt.js";
 
 export const createUser = async ({ name, email, password, role = "user" }) => {
   try {

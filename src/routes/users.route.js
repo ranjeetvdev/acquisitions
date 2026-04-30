@@ -16,8 +16,8 @@ router.get("/", authenticateToken, requireRole(["admin"]), fetchAllUsers);
 // GET /users/:id - Get user by ID (authenticated user only)
 router.get("/:id", authenticateToken, fetchUserById);
 
-// PUT /users/:id - Update user by ID (authenticated users can update own profile, admin can update only)
-router.put("/:id", authenticateToken, updateUserById);
+// PUT /users/:id - Update user by ID (authenticated users can update own profile, admins can update any user)
+router.patch("/:id", authenticateToken, updateUserById);
 
 // DELETE /users/:id - Delete user by ID (admin only)
 router.delete(
